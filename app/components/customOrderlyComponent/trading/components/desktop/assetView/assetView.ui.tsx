@@ -14,6 +14,9 @@ import {
   ChevronDownIcon,
   Tooltip,
   Divider,
+  PopoverRoot,
+  PopoverTrigger,
+  PopoverContent,
   gradientTextVariants,
   cn,
 } from "@orderly.network/ui";
@@ -430,13 +433,14 @@ export const AssetView: FC<
 
     const { t } = useTranslation();
 
-    const account = useAccountInstance();
-    const currentState = account.stateValue;
+    const { account: accountInstance, switchAccount } = useAccount();
+    const currentState = accountInstance.stateValue;
     const currentAccountId = currentState.accountId;
     const isMain = currentAccountId === currentState.mainAccountId;
     const accountName = isMain
       ? "Main account"
       : currentState.subAccounts?.find((sub) => sub.id === currentAccountId)?.description || currentAccountId || "";
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const transferButton = hasSubAccount && (
       <Button
@@ -489,9 +493,84 @@ export const AssetView: FC<
     return (
       <Box className="oui-assetView oui-relative">
         {isConnected && accountName && (
-          <Text size="2xs" weight="semibold" color="neutral" className="oui-mb-2">
-            {accountName}
-          </Text>
+          <PopoverRoot open={dropdownOpen} onOpenChange={setDropdownOpen}>
+            <PopoverTrigger asChild>
+              <Flex
+                gap={1}
+                itemAlign="center"
+                className="oui-cursor-pointer oui-mb-2"
+              >
+                <Text size="2xs" weight="semibold" color="neutral">
+                  {accountName}
+                </Text>
+                <ChevronDownIcon size={12} className="oui-text-base-contrast-54" />
+              </Flex>
+            </PopoverTrigger>
+            <PopoverContent
+              align="start"
+              side="bottom"
+              sideOffset={8}
+              className="oui-w-[240px] oui-border oui-border-line-6 oui-bg-base-8 oui-p-3 oui-rounded-lg oui-space-y-1"
+            >
+              {currentState.mainAccountId && (
+                <Flex
+                  justify="between"
+                  itemAlign="center"
+                  className={cn(
+                    "oui-px-2 oui-py-1.5 oui-rounded-md oui-cursor-pointer hover:oui-bg-base-6",
+                    isMain && "oui-bg-base-6"
+                  )}
+                  onClick={() => {
+                    if (!isMain) {
+                      switchAccount(currentState.mainAccountId!).then(() => {
+                        setDropdownOpen(false);
+                      });
+                    } else {
+                      setDropdownOpen(false);
+                    }
+                  }}
+                >
+                  <Text size="2xs" weight="semibold">
+                    {t("subAccount.modal.mainAccount.title", "Main account")}
+                  </Text>
+                  {isMain && (
+                    <Text size="2xs" color="primary">
+                      {t("common.current", "Current")}
+                    </Text>
+                  )}
+                </Flex>
+              )}
+              {currentState.subAccounts?.map((sub) => (
+                <Flex
+                  key={sub.id}
+                  justify="between"
+                  itemAlign="center"
+                  className={cn(
+                    "oui-px-2 oui-py-1.5 oui-rounded-md oui-cursor-pointer hover:oui-bg-base-6",
+                    sub.id === currentAccountId && "oui-bg-base-6"
+                  )}
+                  onClick={() => {
+                    if (sub.id !== currentAccountId) {
+                      switchAccount(sub.id).then(() => {
+                        setDropdownOpen(false);
+                      });
+                    } else {
+                      setDropdownOpen(false);
+                    }
+                  }}
+                >
+                  <Text size="2xs" weight="semibold">
+                    {sub.description || sub.id}
+                  </Text>
+                  {sub.id === currentAccountId && (
+                    <Text size="2xs" color="primary">
+                      {t("common.current", "Current")}
+                    </Text>
+                  )}
+                </Flex>
+              ))}
+            </PopoverContent>
+          </PopoverRoot>
         )}
         {title && description && (
           <Flex direction="column" gap={1} className="oui-mb-[32px]">
