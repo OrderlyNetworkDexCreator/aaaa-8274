@@ -1,4 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
+import { useAccount, useCollateral, useLocalStorage } from "@orderly.network/hooks";
+import { useAppContext } from "@orderly.network/react-app";
+import { AccountStatusEnum, OrderEntrySortKeys } from "@orderly.network/types";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { API } from "@orderly.network/types";
 import { TradingPage } from "@/components/customOrderlyComponent/trading";
@@ -14,6 +17,41 @@ export default function PerpSymbol() {
   const config = useOrderlyConfig();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  // 账户面板顺序逻辑（登录+余额判断）
+  const { state } = useAccount();
+  const { availableBalance } = useCollateral({ dp: 2 });
+  const { wrongNetwork, disabledConnect } = useAppContext();
+  const isLoggedIn = state.status >= AccountStatusEnum.SignedIn;
+  const hasBalance = availableBalance > 0;
+  const canTrade = useMemo(() => {
+    return (
+      !wrongNetwork &&
+      !disabledConnect &&
+      (
+        state.status === AccountStatusEnum.EnableTrading ||
+        state.status === AccountStatusEnum.EnableTradingWithoutConnected
+      )
+    );
+  }, [state.status, wrongNetwork, disabledConnect]);
+
+  // 登录且有余额，账户在下，否则在上
+  const defaultSortItems = (isLoggedIn && hasBalance)
+    ? ["margin", "orderEntry", "assets"]   // 账户在下
+    : ["assets", "margin", "orderEntry"];   // 账户在上
+  const [sortableItems, setSortableItems] = useLocalStorage<string[]>(
+    OrderEntrySortKeys,
+    defaultSortItems
+  );
+
+  // 当登录状态或余额变化时，动态更新面板顺序
+  useEffect(() => {
+    if (isLoggedIn && hasBalance) {
+      setSortableItems(["margin", "orderEntry", "assets"]);
+    } else {
+      setSortableItems(["assets", "margin", "orderEntry"]);
+    }
+  }, [isLoggedIn, hasBalance]);
 
   useEffect(() => {
     updateSymbol(symbol);
