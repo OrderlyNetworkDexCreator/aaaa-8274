@@ -122,3 +122,33 @@
 [data-oui-theme="light"] .theme-toggle-btn:hover {
   color: rgba(0, 0, 0, 0.8);
 }
+
+/* AI Sparkle button */
+.ai-sparkle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: rgba(221, 208, 25, 0.88);
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.ai-sparkle-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #e1ff20;
+}
+
+[data-oui-theme="light"] .ai-sparkle-btn {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+[data-oui-theme="light"] .ai-sparkle-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.9);
+}

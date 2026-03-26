@@ -420,6 +420,14 @@ export const useOrderlyConfig = () => {
             {components.subAccount}
             {components.chainMenu}
             {components.walletConnect}
+            {!isMobile && (
+              <Link to="/" className="ai-sparkle-btn" aria-label="AI Assistant">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" />
+                  <path d="M19 2L19.94 4.06L22 5L19.94 5.94L19 8L18.06 5.94L16 5L18.06 4.06L19 2Z" />
+                </svg>
+              </Link>
+            )}
           </Flex>
         </Flex>
       );
