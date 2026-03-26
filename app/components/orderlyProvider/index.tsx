@@ -195,6 +195,9 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 		[]
 	);
 
+	// RTL languages
+	const RTL_LANGUAGES = ['fa', 'he', 'ar'];
+
 	const onLanguageChanged = async (lang: LocaleCode) => {
 		if (typeof window !== 'undefined') {
 			const url = new URL(window.location.href);
@@ -203,6 +206,8 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 			} else {
 				url.searchParams.set('lang', lang);
 			}
+			// Set text direction based on language
+			document.documentElement.dir = RTL_LANGUAGES.includes(lang) ? 'rtl' : 'ltr';
 			window.history.replaceState({}, '', url.toString());
 		}
 	};
@@ -222,8 +227,20 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 
 	const defaultLanguage = getDefaultLanguage();
 
+	// Set initial text direction based on default language
+	if (typeof document !== 'undefined') {
+		document.documentElement.dir = RTL_LANGUAGES.includes(defaultLanguage) ? 'rtl' : 'ltr';
+	}
+
 	const availableLanguages = getAvailableLanguages();
-	const filteredLanguages = defaultLanguages.filter(lang =>
+
+	// Custom languages not included in defaultLanguages from @orderly.network/i18n
+	const customLanguages = [
+		{ localCode: 'fa', displayName: 'فارسی' },
+	];
+
+	const allKnownLanguages = [...defaultLanguages, ...customLanguages];
+	const filteredLanguages = allKnownLanguages.filter(lang =>
 		availableLanguages.includes(lang.localCode)
 	);
 
