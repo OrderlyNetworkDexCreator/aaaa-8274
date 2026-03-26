@@ -27,6 +27,30 @@ function loadConfigTitle(): string {
   }
 }
 
+/**
+ * Vite plugin to limit the trading points ranking to top 100.
+ * Transforms the @orderly.network/trading-points module at build time:
+ * - Changes pageSize from 10 to 100
+ * - Caps pagination total at 100
+ */
+function limitPointsRankingTop100Plugin(): Plugin {
+  return {
+    name: "limit-points-ranking-top100",
+    transform(code, id) {
+      if (!id.includes("@orderly.network/trading-points")) return;
+      return code
+        .replace(
+          /usePagination\(\{\s*pageSize:\s*10\s*\}\)/,
+          "usePagination({ pageSize: 100 })"
+        )
+        .replace(
+          /total:\s*data\?\.meta\?\.total\s*\|\|\s*0/,
+          "Math.min(data?.meta?.total || 0, 100)"
+        );
+    },
+  };
+}
+
 function htmlTitlePlugin(): Plugin {
   const title = loadConfigTitle();
   console.log(`Using title from config.js: ${title}`);
@@ -52,6 +76,7 @@ export default defineConfig(() => {
       react(),
       tsconfigPaths(),
       htmlTitlePlugin(),
+      limitPointsRankingTop100Plugin(),
       cjsInterop({
         dependencies: ["bs58", "@coral-xyz/anchor", "lodash"],
       }),
