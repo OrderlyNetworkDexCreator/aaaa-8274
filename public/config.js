@@ -1,6 +1,6 @@
 window.__RUNTIME_CONFIG__ = {
   "VITE_ORDERLY_BROKER_ID": "demo",
-  "VITE_ORDERLY_BROKER_NAME": "VantaTest",
+  "VITE_ORDERLY_BROKER_NAME": "Vanta",
   "VITE_BROKER_EOA_ADDRESS": "0x5c4fc2a0fda779922c60aaa32ffc48d95b772c58",
   "VITE_DISABLE_MAINNET": "false",
   "VITE_DISABLE_TESTNET": "false",
@@ -14,7 +14,7 @@ window.__RUNTIME_CONFIG__ = {
   "VITE_DISABLE_EVM_WALLETS": "false",
   "VITE_DISABLE_SOLANA_WALLETS": "false",
   "VITE_WALLETCONNECT_PROJECT_ID": "bccbca18afe1db322ca70022bb828bb4",
-  "VITE_APP_NAME": "VantaTest",
+  "VITE_APP_NAME": "Vanta",
   "VITE_APP_DESCRIPTION": "Orderly Trading Application",
   "VITE_HAS_PRIMARY_LOGO": "true",
   "VITE_HAS_SECONDARY_LOGO": "true",
