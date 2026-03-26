@@ -62,6 +62,7 @@ interface AssetValueListProps {
   currentLeverage?: number;
   isConnected: boolean;
   currentLtv?: string | number;
+  riskRate?: string;
 }
 
 const calculateTextColor = (val: number): string => {
@@ -279,6 +280,7 @@ const AssetValueList: FC<AssetValueListProps> = (props) => {
     currentLeverage,
     isConnected,
     currentLtv,
+    riskRate,
   } = props;
 
   const [optionsOpen, setOptionsOpen] = useLocalStorage(
@@ -326,8 +328,8 @@ const AssetValueList: FC<AssetValueListProps> = (props) => {
           "group-hover:oui-will-change-[max-height]",
           open
             ? showLTV
-              ? "oui-max-h-[144px]"
-              : "oui-max-h-[119px]"
+              ? "oui-max-h-[169px]"
+              : "oui-max-h-[144px]"
             : "oui-max-h-0",
         )}
       >
@@ -377,6 +379,24 @@ const AssetValueList: FC<AssetValueListProps> = (props) => {
           value={currentLeverage}
           unit="x"
         />
+        <Flex justify="between">
+          <Text
+            size="2xs"
+            color="neutral"
+            weight="semibold"
+          >
+            {t("trading.asset.riskRate", "Risk rate")}
+          </Text>
+          <Text
+            size="2xs"
+            className={cn(
+              "select-none",
+              visible && calculateTextColor(parseFloat(riskRate ?? "0")),
+            )}
+          >
+            {visible ? (riskRate ?? "--") : "*****"}
+          </Text>
+        </Flex>
         {showLTV && <LTVDetail visible={visible} value={currentLtv} />}
       </Box>
     </Box>
@@ -403,161 +423,163 @@ export const AssetView: FC<
   isMainAccount,
   hasSubAccount,
   currentLtv,
+  riskRate,
 }) => {
-  const { title, description, titleColor, titleClsName } =
-    useCurrentStatusText();
+    const { title, description, titleColor, titleClsName } =
+      useCurrentStatusText();
 
-  const { t } = useTranslation();
+    const { t } = useTranslation();
 
-  const transferButton = hasSubAccount && (
-    <Button
-      className="oui-assetView-transfer-btn"
-      fullWidth
-      color="secondary"
-      size="md"
-      onClick={onTransfer}
-      data-testid="oui-testid-assetView-transfer-button"
-    >
-      <Text>{t("common.transfer")}</Text>
-    </Button>
-  );
-
-  const depositButton = isMainAccount && (
-    <Button
-      className="oui-assetView-deposit-btn"
-      data-testid="oui-testid-assetView-deposit-button"
-      fullWidth
-      size="md"
-      onClick={onDeposit}
-    >
-      {!hasSubAccount && (
-        <ArrowDownShortIcon opacity={1} className="oui-text-primary-contrast" />
-      )}
-      <Text>{t("common.deposit")}</Text>
-    </Button>
-  );
-
-  const withdrawButton = isMainAccount && (
-    <Button
-      className="oui-assetView-withdraw-btn"
-      fullWidth
-      color="secondary"
-      size="md"
-      onClick={onWithdraw}
-      data-testid="oui-testid-assetView-withdraw-button"
-    >
-      {!hasSubAccount && (
-        <ArrowDownShortIcon
-          color="white"
-          opacity={1}
-          className="oui-rotate-180"
-        />
-      )}
-      <Text>{t("common.withdraw")}</Text>
-    </Button>
-  );
-
-  return (
-    <Box className="oui-assetView oui-relative">
-      {title && description && (
-        <Flex direction="column" gap={1} className="oui-mb-[32px]">
-          <Text
-            size="lg"
-            weight="bold"
-            color={titleColor || "inherit"}
-            className={titleClsName}
-          >
-            {title}
-          </Text>
-          <Text
-            size="2xs"
-            color="neutral"
-            weight="semibold"
-            className="oui-text-center"
-          >
-            {description}
-          </Text>
-        </Flex>
-      )}
-      <AuthGuard
-        networkId={networkId}
-        buttonProps={{ size: "md", fullWidth: true }}
+    const transferButton = hasSubAccount && (
+      <Button
+        className="oui-assetView-transfer-btn"
+        fullWidth
+        color="secondary"
+        size="md"
+        onClick={onTransfer}
+        data-testid="oui-testid-assetView-transfer-button"
       >
-        {isFirstTimeDeposit && isMainAccount ? (
-          <>
-            <Box>
-              <Flex direction="column" gap={1} className="oui-mb-[32px]">
-                <Text.gradient size="lg" weight="bold" color="brand">
-                  {t("trading.asset.startTrading")}
-                </Text.gradient>
-                <Text size="2xs" color="neutral" weight="semibold">
-                  {t("trading.asset.startTrading.description")}
-                </Text>
-              </Flex>
-            </Box>
-            <Button
-              className="oui-assetView-deposit-btn"
-              data-testid="oui-testid-assetView-deposit-button"
-              fullWidth
-              size="md"
-              onClick={onDeposit}
-            >
-              <ArrowDownShortIcon
-                opacity={1}
-                className="oui-text-primary-contrast"
-              />
-              <Text>{t("common.deposit")}</Text>
-            </Button>
+        <Text>{t("common.transfer")}</Text>
+      </Button>
+    );
 
-            <Box className="oui-mt-3">
-              <FaucetWidget />
-            </Box>
-          </>
-        ) : (
-          <Box className="oui-space-y-4">
-            <TotalValue
-              totalValue={totalValue}
-              visible={visible}
-              onToggleVisibility={toggleVisible}
-            />
-            <AssetValueList
-              visible={visible}
-              freeCollateral={freeCollateral}
-              marginRatioVal={marginRatioVal}
-              renderMMR={renderMMR}
-              maintenanceMargin={maintenanceMargin}
-              currentLeverage={currentLeverage}
-              isConnected={isConnected}
-              currentLtv={currentLtv}
-            />
-            <Flex
-              gap={isMainAccount ? (hasSubAccount ? 2 : 3) : 0}
-              itemAlign="center"
+    const depositButton = isMainAccount && (
+      <Button
+        className="oui-assetView-deposit-btn"
+        data-testid="oui-testid-assetView-deposit-button"
+        fullWidth
+        size="md"
+        onClick={onDeposit}
+      >
+        {!hasSubAccount && (
+          <ArrowDownShortIcon opacity={1} className="oui-text-primary-contrast" />
+        )}
+        <Text>{t("common.deposit")}</Text>
+      </Button>
+    );
+
+    const withdrawButton = isMainAccount && (
+      <Button
+        className="oui-assetView-withdraw-btn"
+        fullWidth
+        color="secondary"
+        size="md"
+        onClick={onWithdraw}
+        data-testid="oui-testid-assetView-withdraw-button"
+      >
+        {!hasSubAccount && (
+          <ArrowDownShortIcon
+            color="white"
+            opacity={1}
+            className="oui-rotate-180"
+          />
+        )}
+        <Text>{t("common.withdraw")}</Text>
+      </Button>
+    );
+
+    return (
+      <Box className="oui-assetView oui-relative">
+        {title && description && (
+          <Flex direction="column" gap={1} className="oui-mb-[32px]">
+            <Text
+              size="lg"
+              weight="bold"
+              color={titleColor || "inherit"}
+              className={titleClsName}
             >
-              {isMainAccount ? (
-                <>
-                  {depositButton}
-                  {transferButton}
-                  {withdrawButton}
-                </>
-              ) : (
-                transferButton
-              )}
-            </Flex>
-            {isMainAccount && <FaucetWidget />}
-          </Box>
+              {title}
+            </Text>
+            <Text
+              size="2xs"
+              color="neutral"
+              weight="semibold"
+              className="oui-text-center"
+            >
+              {description}
+            </Text>
+          </Flex>
         )}
-      </AuthGuard>
-      <div
-        className={cn(
-          "oui-absolute oui-inset-0 oui-rotate-180",
-          "oui-pointer-events-none oui-rounded-2xl oui-blur-[200px]",
-        )}
-        style={{
-          background:
-            "conic-gradient(from -40.91deg at 40.63% 50.41%, rgba(var(--oui-color-base-foreground)/0) -48.92deg, rgba(var(--oui-color-base-foreground)/0) 125.18deg, rgb(var(--oui-color-primary)) 193.41deg, rgb(var(--oui-color-warning)) 216.02deg, rgb(var(--oui-color-link)) 236.07deg, rgb(var(--oui-color-primary-light)) 259.95deg, rgba(var(--oui-color-base-foreground)/0) 311.08deg, rgba(var(--oui-color-base-foreground)/0) 485.18deg)",
-        }}
-      />
-    </Box>
-  );
-};
+        <AuthGuard
+          networkId={networkId}
+          buttonProps={{ size: "md", fullWidth: true }}
+        >
+          {isFirstTimeDeposit && isMainAccount ? (
+            <>
+              <Box>
+                <Flex direction="column" gap={1} className="oui-mb-[32px]">
+                  <Text.gradient size="lg" weight="bold" color="brand">
+                    {t("trading.asset.startTrading")}
+                  </Text.gradient>
+                  <Text size="2xs" color="neutral" weight="semibold">
+                    {t("trading.asset.startTrading.description")}
+                  </Text>
+                </Flex>
+              </Box>
+              <Button
+                className="oui-assetView-deposit-btn"
+                data-testid="oui-testid-assetView-deposit-button"
+                fullWidth
+                size="md"
+                onClick={onDeposit}
+              >
+                <ArrowDownShortIcon
+                  opacity={1}
+                  className="oui-text-primary-contrast"
+                />
+                <Text>{t("common.deposit")}</Text>
+              </Button>
+
+              <Box className="oui-mt-3">
+                <FaucetWidget />
+              </Box>
+            </>
+          ) : (
+            <Box className="oui-space-y-4">
+              <TotalValue
+                totalValue={totalValue}
+                visible={visible}
+                onToggleVisibility={toggleVisible}
+              />
+              <AssetValueList
+                visible={visible}
+                freeCollateral={freeCollateral}
+                marginRatioVal={marginRatioVal}
+                renderMMR={renderMMR}
+                maintenanceMargin={maintenanceMargin}
+                currentLeverage={currentLeverage}
+                isConnected={isConnected}
+                currentLtv={currentLtv}
+                riskRate={riskRate}
+              />
+              <Flex
+                gap={isMainAccount ? (hasSubAccount ? 2 : 3) : 0}
+                itemAlign="center"
+              >
+                {isMainAccount ? (
+                  <>
+                    {depositButton}
+                    {transferButton}
+                    {withdrawButton}
+                  </>
+                ) : (
+                  transferButton
+                )}
+              </Flex>
+              {isMainAccount && <FaucetWidget />}
+            </Box>
+          )}
+        </AuthGuard>
+        <div
+          className={cn(
+            "oui-absolute oui-inset-0 oui-rotate-180",
+            "oui-pointer-events-none oui-rounded-2xl oui-blur-[200px]",
+          )}
+          style={{
+            background:
+              "conic-gradient(from -40.91deg at 40.63% 50.41%, rgba(var(--oui-color-base-foreground)/0) -48.92deg, rgba(var(--oui-color-base-foreground)/0) 125.18deg, rgb(var(--oui-color-primary)) 193.41deg, rgb(var(--oui-color-warning)) 216.02deg, rgb(var(--oui-color-link)) 236.07deg, rgb(var(--oui-color-primary-light)) 259.95deg, rgba(var(--oui-color-base-foreground)/0) 311.08deg, rgba(var(--oui-color-base-foreground)/0) 485.18deg)",
+          }}
+        />
+      </Box>
+    );
+  };

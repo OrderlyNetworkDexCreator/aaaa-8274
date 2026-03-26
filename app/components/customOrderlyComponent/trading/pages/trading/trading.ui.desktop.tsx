@@ -174,7 +174,7 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = (props) => {
 
   const [sortableItems, setSortableItems] = useLocalStorage<string[]>(
     OrderEntrySortKeys,
-    ["assets", "orderEntry"],
+    ["margin", "assets", "orderEntry"],
   );
 
   const dropAnimationConfig = useMemo(() => {
@@ -465,6 +465,14 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = (props) => {
 
   const orderInteractionWidgets = useMemo(() => {
     return {
+      margin: {
+        className: "oui-trading-riskRate-container",
+        element: (
+          <React.Suspense fallback={null}>
+            <LazyRiskRateWidget />
+          </React.Suspense>
+        ),
+      },
       assets: {
         className:
           "oui-trading-assetsView-container oui-border oui-border-line-12",
@@ -475,11 +483,6 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = (props) => {
                 isFirstTimeDeposit={props.isFirstTimeDeposit}
               />
             </React.Suspense>
-            {props.canTrade && (
-              <React.Suspense fallback={null}>
-                <LazyRiskRateWidget />
-              </React.Suspense>
-            )}
             <DepositStatusWidget
               className="oui-mt-3 oui-gap-y-2"
               onClick={props.navigateToPortfolio}
@@ -507,7 +510,6 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = (props) => {
     props.disableFeatures,
     props.navigateToPortfolio,
     props.symbol,
-    props.canTrade,
   ]);
 
   const orderEntryView = (
@@ -840,8 +842,8 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = (props) => {
               showIndicator={showPositionIcon}
               dragOverlay
               className={`${orderInteractionWidgets[
-                  activeId as keyof typeof orderInteractionWidgets
-                ].className
+                activeId as keyof typeof orderInteractionWidgets
+              ].className
                 } oui-shadow-lg oui-shadow-base-9`}
             >
               {
@@ -926,8 +928,8 @@ export const DesktopLayout: React.FC<DesktopLayoutProps> = (props) => {
             showIndicator={showPositionIcon}
             dragOverlay
             className={`${orderInteractionWidgets[
-                activeId as keyof typeof orderInteractionWidgets
-              ].className
+              activeId as keyof typeof orderInteractionWidgets
+            ].className
               } oui-shadow-lg oui-shadow-base-9`}
           >
             {
