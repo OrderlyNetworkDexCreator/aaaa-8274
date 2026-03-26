@@ -65,3 +65,33 @@
   height: 0 !important;
   opacity: 0 !important;
 }
+
+/* Vanta Genesis Points special nav button */
+.vanta-genesis-points-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgb(0, 228, 171) !important;
+  background: rgba(0, 228, 171, 0.08);
+  border: 1px solid rgba(0, 228, 171, 0.45);
+  white-space: nowrap;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.vanta-genesis-points-btn:hover {
+  background: rgba(0, 228, 171, 0.16);
+  border-color: rgba(0, 228, 171, 0.8);
+  box-shadow: 0 0 12px rgba(0, 228, 171, 0.2);
+}
+
+.vanta-genesis-points-icon {
+  flex-shrink: 0;
+  stroke: rgb(0, 228, 171);
+}

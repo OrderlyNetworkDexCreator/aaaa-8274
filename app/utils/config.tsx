@@ -5,9 +5,9 @@ import {
   BottomNavProps,
   FooterProps,
   MainNavWidgetProps,
+  MainNavItem,
 } from "@orderly.network/ui-scaffold";
 import { AppLogos } from "@orderly.network/react-app";
-import { OrderlyActiveIcon, OrderlyIcon } from "../components/icons/orderly";
 import { withBasePath } from "./base-path";
 import {
   PortfolioActiveIcon,
@@ -29,12 +29,6 @@ import {
 } from "./runtime-config";
 import { Link } from "react-router-dom";
 import CustomLeftNav from "@/components/CustomLeftNav";
-
-interface MainNavItem {
-  name: string;
-  href: string;
-  target?: string;
-}
 
 interface ColorConfigInterface {
   upColor?: string;
@@ -257,19 +251,99 @@ export const useOrderlyConfig = () => {
     const enabledMenus = getEnabledMenus();
     const customMenus = getCustomMenuItems();
 
-    const translatedEnabledMenus = enabledMenus.map((menu) => {
-      const item: Record<string, unknown> = {
-        name: t(menu.translationKey),
-        href: menu.href,
-      };
-      // Special styling for Futures (Trading) nav item
-      if (menu.name === "Trading") {
-        item.className = "futures-nav-item";
-      }
-      return item;
-    });
+    // Book icon SVG for CS Team > User Manual
+    const bookIcon = (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+      </svg>
+    );
 
-    const allMenuItems = [...translatedEnabledMenus, ...customMenus];
+    // Telegram icon SVG
+    const telegramIcon = (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+      </svg>
+    );
+
+    // X (Twitter) icon SVG
+    const xIcon = (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    );
+
+    // Build the hardcoded nav structure:
+    // Futures | Spot | Market | Portfolio | CS Team ▼ | More ▼
+    const mainMenuItems: MainNavItem[] = [
+      {
+        name: "Futures",
+        href: "/",
+        className: "futures-nav-item",
+      },
+      {
+        name: "Spot",
+        href: "/swap",
+      },
+      {
+        name: "Market",
+        href: "/markets",
+      },
+      {
+        name: "Portfolio",
+        href: "/portfolio",
+      },
+      {
+        name: "CS TEAM",
+        href: "#",
+        children: [
+          {
+            name: "User Manual",
+            href: "https://google.com",
+            target: "_blank",
+            icon: bookIcon,
+            activeIcon: bookIcon,
+          },
+          {
+            name: "Telegram",
+            href: "https://google.com",
+            target: "_blank",
+            icon: telegramIcon,
+            activeIcon: telegramIcon,
+          },
+          {
+            name: "X",
+            href: "https://google.com",
+            target: "_blank",
+            icon: xIcon,
+            activeIcon: xIcon,
+          },
+        ],
+      },
+      {
+        name: "More",
+        href: "#",
+        children: [
+          {
+            name: "Leaderboard",
+            href: "/leaderboard",
+          },
+        ],
+      },
+    ];
+
+    // Add any custom menu items from config
+    const allMenuItems: MainNavItem[] = [...mainMenuItems, ...customMenus];
+
+    // For mobile left nav, flatten into simple items
+    const mobileMenus = [
+      { name: "Futures", href: "/" },
+      { name: "Spot", href: "/swap" },
+      { name: "Market", href: "/markets" },
+      { name: "Portfolio", href: "/portfolio" },
+      { name: "Leaderboard", href: "/leaderboard" },
+      { name: "Points", href: "/points" },
+    ];
 
     const supportedBottomNavMenus = [
       "Trading",
@@ -294,23 +368,6 @@ export const useOrderlyConfig = () => {
       mainMenus: allMenuItems,
     };
 
-    if (getRuntimeConfigBoolean("VITE_ENABLE_CAMPAIGNS")) {
-      mainNavProps.campaigns = {
-        name: "$ORDER",
-        href: "/rewards",
-        children: [
-          {
-            name: t("extend.staking"),
-            href: "https://app.orderly.network/staking",
-            description: t("extend.staking.description"),
-            icon: <OrderlyIcon size={14} />,
-            activeIcon: <OrderlyActiveIcon size={14} />,
-            target: "_blank",
-          },
-        ],
-      };
-    }
-
     mainNavProps.customRender = (components) => {
       return (
         <Flex justify="between" className="oui-w-full">
@@ -320,7 +377,7 @@ export const useOrderlyConfig = () => {
           >
             {isMobile && (
               <CustomLeftNav
-                menus={translatedEnabledMenus}
+                menus={mobileMenus}
                 externalLinks={customMenus}
               />
             )}
@@ -346,6 +403,15 @@ export const useOrderlyConfig = () => {
             {components.languageSwitcher}
             {components.subAccount}
             {components.chainMenu}
+            {!isMobile && (
+              <Link to="/points" className="vanta-genesis-points-btn">
+                <svg className="vanta-genesis-points-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                </svg>
+                Vanta Genesis Points
+              </Link>
+            )}
             {components.walletConnect}
           </Flex>
         </Flex>
