@@ -394,15 +394,6 @@ export const useOrderlyConfig = () => {
               )}
             </Link>
             {components.mainNav}
-          </Flex>
-
-          <Flex itemAlign={"center"} className="oui-gap-2">
-            {components.accountSummary}
-            {components.linkDevice}
-            {components.scanQRCode}
-            {components.languageSwitcher}
-            {components.subAccount}
-            {components.chainMenu}
             {!isMobile && (
               <Link to="/points" className="vanta-genesis-points-btn">
                 <svg className="vanta-genesis-points-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -412,6 +403,15 @@ export const useOrderlyConfig = () => {
                 Vanta Genesis Points
               </Link>
             )}
+          </Flex>
+
+          <Flex itemAlign={"center"} className="oui-gap-2">
+            {components.accountSummary}
+            {components.linkDevice}
+            {components.scanQRCode}
+            {components.languageSwitcher}
+            {components.subAccount}
+            {components.chainMenu}
             {components.walletConnect}
           </Flex>
         </Flex>
