@@ -257,10 +257,17 @@ export const useOrderlyConfig = () => {
     const enabledMenus = getEnabledMenus();
     const customMenus = getCustomMenuItems();
 
-    const translatedEnabledMenus = enabledMenus.map((menu) => ({
-      name: t(menu.translationKey),
-      href: menu.href,
-    }));
+    const translatedEnabledMenus = enabledMenus.map((menu) => {
+      const item: Record<string, unknown> = {
+        name: t(menu.translationKey),
+        href: menu.href,
+      };
+      // Special styling for Futures (Trading) nav item
+      if (menu.name === "Trading") {
+        item.className = "futures-nav-item";
+      }
+      return item;
+    });
 
     const allMenuItems = [...translatedEnabledMenus, ...customMenus];
 
@@ -319,7 +326,7 @@ export const useOrderlyConfig = () => {
             )}
             <Link to="/">
               {isMobile &&
-              getRuntimeConfigBoolean("VITE_HAS_SECONDARY_LOGO") ? (
+                getRuntimeConfigBoolean("VITE_HAS_SECONDARY_LOGO") ? (
                 <img
                   src={withBasePath("/logo-secondary.webp")}
                   alt="logo"
@@ -373,14 +380,14 @@ export const useOrderlyConfig = () => {
         appIcons: {
           main: getRuntimeConfigBoolean("VITE_HAS_PRIMARY_LOGO")
             ? {
-                component: (
-                  <img
-                    src={withBasePath("/logo.webp")}
-                    alt="logo"
-                    style={{ height: "42px" }}
-                  />
-                ),
-              }
+              component: (
+                <img
+                  src={withBasePath("/logo.webp")}
+                  alt="logo"
+                  style={{ height: "42px" }}
+                />
+              ),
+            }
             : { img: withBasePath("/orderly-logo.svg") },
           secondary: {
             img: getRuntimeConfigBoolean("VITE_HAS_SECONDARY_LOGO")
@@ -401,8 +408,8 @@ export const useOrderlyConfig = () => {
         sharePnLConfig: {
           backgroundImages: getPnLBackgroundImages(),
           color: "rgba(255, 255, 255, 0.98)",
-          profitColor: "rgba(41, 223, 169, 1)",
-          lossColor: "rgba(245, 97, 139, 1)",
+          profitColor: "rgba(15, 178, 118, 1)",
+          lossColor: "rgba(245, 70, 75, 1)",
           brandColor: "rgba(255, 255, 255, 0.98)",
           // ref
           refLink:
