@@ -95,3 +95,30 @@
   flex-shrink: 0;
   stroke: rgb(0, 228, 171);
 }
+
+/* Theme toggle button */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  color: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+[data-oui-theme="light"] .theme-toggle-btn {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+[data-oui-theme="light"] .theme-toggle-btn:hover {
+  color: rgba(0, 0, 0, 0.8);
+}

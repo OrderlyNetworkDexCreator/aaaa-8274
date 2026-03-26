@@ -29,6 +29,7 @@ import {
 } from "./runtime-config";
 import { Link } from "react-router-dom";
 import CustomLeftNav from "@/components/CustomLeftNav";
+import { ThemeToggleButton } from "@/components/ThemeToggleButton";
 
 interface ColorConfigInterface {
   upColor?: string;
@@ -415,6 +416,7 @@ export const useOrderlyConfig = () => {
             {components.linkDevice}
             {components.scanQRCode}
             {components.languageSwitcher}
+            <ThemeToggleButton />
             {components.subAccount}
             {components.chainMenu}
             {components.walletConnect}
