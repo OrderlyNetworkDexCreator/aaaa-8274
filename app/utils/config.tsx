@@ -295,7 +295,7 @@ export const useOrderlyConfig = () => {
       },
       {
         name: "CS TEAM",
-        href: "#",
+        href: "/cs-team",
         children: [
           {
             name: "User Manual",
@@ -322,7 +322,7 @@ export const useOrderlyConfig = () => {
       },
       {
         name: "More",
-        href: "#",
+        href: "/more",
         children: [
           {
             name: "Leaderboard",
@@ -332,8 +332,12 @@ export const useOrderlyConfig = () => {
       },
     ];
 
-    // Add any custom menu items from config
-    const allMenuItems: MainNavItem[] = [...mainMenuItems, ...customMenus];
+    // Add any custom menu items from config, excluding ones already hardcoded
+    const hardcodedNames = mainMenuItems.map((m) => m.name.toUpperCase());
+    const filteredCustomMenus = customMenus.filter(
+      (m) => !hardcodedNames.includes(m.name.toUpperCase())
+    );
+    const allMenuItems: MainNavItem[] = [...mainMenuItems, ...filteredCustomMenus];
 
     // For mobile left nav, flatten into simple items
     const mobileMenus = [
@@ -407,6 +411,7 @@ export const useOrderlyConfig = () => {
 
           <Flex itemAlign={"center"} className="oui-gap-2">
             {components.accountSummary}
+            {components.notify}
             {components.linkDevice}
             {components.scanQRCode}
             {components.languageSwitcher}
