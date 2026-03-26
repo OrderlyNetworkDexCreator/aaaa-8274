@@ -234,6 +234,20 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 
 	const availableLanguages = getAvailableLanguages();
 
+	// The library's built-in parseI18nLang only recognizes LocaleEnum values,
+	// so custom language codes like 'fa' get silently converted to 'en'.
+	// This function ensures custom locale codes are preserved.
+	const convertDetectedLanguage = (lang: string): LocaleCode => {
+		if (availableLanguages.includes(lang)) {
+			return lang as LocaleCode;
+		}
+		const match = lang.match(/^([a-z]{2})/i);
+		if (match && availableLanguages.includes(match[1])) {
+			return match[1] as LocaleCode;
+		}
+		return (availableLanguages[0] || 'en') as LocaleCode;
+	};
+
 	// Custom languages not included in defaultLanguages from @orderly.network/i18n
 	const customLanguages = [
 		{ localCode: 'fa', displayName: 'فارسی' },
@@ -291,6 +305,7 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 			backend={{ loadPath }}
 			locale={defaultLanguage}
 			languages={filteredLanguages}
+			convertDetectedLanguage={convertDetectedLanguage}
 		>
 			<Suspense fallback={<LoadingSpinner />}>
 				{walletConnector}
