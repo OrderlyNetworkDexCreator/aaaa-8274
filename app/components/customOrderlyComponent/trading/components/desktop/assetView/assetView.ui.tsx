@@ -1,5 +1,5 @@
 import { FC, useMemo, useState, useCallback, ReactNode } from "react";
-import { useAccount, useLocalStorage } from "@orderly.network/hooks";
+import { useAccount, useAccountInstance, useLocalStorage } from "@orderly.network/hooks";
 import { useTranslation } from "@orderly.network/i18n";
 import { useAppContext } from "@orderly.network/react-app";
 import { AccountStatusEnum } from "@orderly.network/types";
@@ -430,6 +430,14 @@ export const AssetView: FC<
 
     const { t } = useTranslation();
 
+    const account = useAccountInstance();
+    const currentState = account.stateValue;
+    const currentAccountId = currentState.accountId;
+    const isMain = currentAccountId === currentState.mainAccountId;
+    const accountName = isMain
+      ? "Main account"
+      : currentState.subAccounts?.find((sub) => sub.id === currentAccountId)?.description || currentAccountId || "";
+
     const transferButton = hasSubAccount && (
       <Button
         className="oui-assetView-transfer-btn"
@@ -480,6 +488,11 @@ export const AssetView: FC<
 
     return (
       <Box className="oui-assetView oui-relative">
+        {isConnected && accountName && (
+          <Text size="2xs" weight="semibold" color="neutral" className="oui-mb-2">
+            {accountName}
+          </Text>
+        )}
         {title && description && (
           <Flex direction="column" gap={1} className="oui-mb-[32px]">
             <Text
