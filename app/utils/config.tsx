@@ -462,11 +462,20 @@ export const useOrderlyConfig = () => {
           main: getRuntimeConfigBoolean("VITE_HAS_PRIMARY_LOGO")
             ? {
               component: (
-                <img
-                  src={withBasePath("/logo.webp")}
-                  alt="logo"
-                  style={{ height: "42px" }}
-                />
+                <span className="logo-theme-switch">
+                  <img
+                    src={withBasePath("/logo-lightmode.png")}
+                    alt="logo"
+                    className="logo-light"
+                    style={{ height: "42px" }}
+                  />
+                  <img
+                    src={withBasePath("/logo.webp")}
+                    alt="logo"
+                    className="logo-dark"
+                    style={{ height: "42px" }}
+                  />
+                </span>
               ),
             }
             : { img: withBasePath("/orderly-logo.svg") },

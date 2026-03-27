@@ -123,6 +123,29 @@
   color: rgba(0, 0, 0, 0.8);
 }
 
+/* Logo theme switching */
+.logo-theme-switch {
+  display: inline-flex;
+  position: relative;
+  top: 3px;
+}
+
+.logo-theme-switch .logo-dark {
+  display: block;
+}
+
+.logo-theme-switch .logo-light {
+  display: none;
+}
+
+[data-oui-theme="light"] .logo-theme-switch .logo-dark {
+  display: none;
+}
+
+[data-oui-theme="light"] .logo-theme-switch .logo-light {
+  display: block;
+}
+
 /* AI Sparkle button */
 .ai-sparkle-btn {
   display: flex;
