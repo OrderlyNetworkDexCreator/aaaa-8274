@@ -199,3 +199,51 @@
   background: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.9);
 }
+
+/* RTL support - flip flex-row layouts and text/margin alignment */
+[dir="rtl"] .oui-flex-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .oui-flex-row-reverse {
+  flex-direction: row;
+}
+
+[dir="rtl"] .oui-text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .oui-text-right {
+  text-align: left;
+}
+
+[dir="rtl"] .oui-ml-auto {
+  margin-left: unset;
+  margin-right: auto;
+}
+
+[dir="rtl"] .oui-mr-auto {
+  margin-right: unset;
+  margin-left: auto;
+}
+
+[dir="rtl"] .oui-justify-start {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .oui-justify-end {
+  justify-content: flex-start;
+}
+
+/* Markets page: override SDK containers that force dir="ltr" */
+[dir="rtl"] #oui-markets-home-page div[dir="ltr"] {
+  direction: rtl !important;
+}
+
+/* Keep numeric/page-size controls readable in LTR */
+[dir="rtl"] #oui-markets-home-page button[dir="ltr"],
+[dir="rtl"] #oui-markets-home-page input[dir="ltr"],
+[dir="rtl"] #oui-markets-home-page [role="combobox"][dir="ltr"] {
+  direction: ltr !important;
+  text-align: left;
+}
