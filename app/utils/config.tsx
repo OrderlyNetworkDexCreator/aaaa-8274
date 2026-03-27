@@ -278,20 +278,20 @@ export const useOrderlyConfig = () => {
     // Futures | Spot | Market | Portfolio | CS Team ▼ | More ▼
     const mainMenuItems: MainNavItem[] = [
       {
-        name: "Futures",
+        name: t("common.trading"),
         href: "/",
         className: "futures-nav-item",
       },
       {
-        name: "Spot",
+        name: t("extend.swap"),
         href: "/swap",
       },
       {
-        name: "Market",
+        name: t("common.markets"),
         href: "/markets",
       },
       {
-        name: "Portfolio",
+        name: t("common.portfolio"),
         href: "/portfolio",
       },
       {
@@ -326,7 +326,7 @@ export const useOrderlyConfig = () => {
         href: "/more",
         children: [
           {
-            name: "Leaderboard",
+            name: t("tradingLeaderboard.leaderboard"),
             href: "/leaderboard",
           },
         ],
@@ -342,12 +342,12 @@ export const useOrderlyConfig = () => {
 
     // For mobile left nav, flatten into simple items
     const mobileMenus = [
-      { name: "Futures", href: "/" },
-      { name: "Spot", href: "/swap" },
-      { name: "Market", href: "/markets" },
-      { name: "Portfolio", href: "/portfolio" },
-      { name: "Leaderboard", href: "/leaderboard" },
-      { name: "Points", href: "/points" },
+      { name: t("common.trading"), href: "/" },
+      { name: t("extend.swap"), href: "/swap" },
+      { name: t("common.markets"), href: "/markets" },
+      { name: t("common.portfolio"), href: "/portfolio" },
+      { name: t("tradingLeaderboard.leaderboard"), href: "/leaderboard" },
+      { name: t("tradingPoints.points", "Points"), href: "/points" },
     ];
 
     const supportedBottomNavMenus = [
