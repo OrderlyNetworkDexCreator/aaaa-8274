@@ -378,7 +378,7 @@ export const useOrderlyConfig = () => {
         <Flex justify="between" className="oui-w-full">
           <Flex
             itemAlign={"center"}
-            className={cn("oui-gap-3", "oui-overflow-hidden")}
+            className={cn("oui-gap-3", "oui-overflow-x-auto")}
           >
             {isMobile && (
               <CustomLeftNav
@@ -386,7 +386,7 @@ export const useOrderlyConfig = () => {
                 externalLinks={customMenus}
               />
             )}
-            <Link to="/">
+            <Link to="/" className="oui-flex-shrink-0">
               {isMobile &&
                 getRuntimeConfigBoolean("VITE_HAS_SECONDARY_LOGO") ? (
                 <img
@@ -466,15 +466,23 @@ export const useOrderlyConfig = () => {
                   <img
                     src={withBasePath("/logo-lightmode.png")}
                     alt="logo"
-                    className="logo-light"
+                    className="logo-light logo-full"
                     style={{ height: "42px" }}
                   />
                   <img
                     src={withBasePath("/logo.webp")}
                     alt="logo"
-                    className="logo-dark"
+                    className="logo-dark logo-full"
                     style={{ height: "42px" }}
                   />
+                  {getRuntimeConfigBoolean("VITE_HAS_SECONDARY_LOGO") && (
+                    <img
+                      src={withBasePath("/logo-secondary.webp")}
+                      alt="logo"
+                      className="logo-compact"
+                      style={{ height: "32px" }}
+                    />
+                  )}
                 </span>
               ),
             }

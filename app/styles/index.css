@@ -128,6 +128,7 @@
   display: inline-flex;
   position: relative;
   top: 3px;
+  flex-shrink: 0;
 }
 
 .logo-theme-switch .logo-dark {
@@ -138,12 +139,35 @@
   display: none;
 }
 
+.logo-theme-switch .logo-compact {
+  display: none;
+}
+
 [data-oui-theme="light"] .logo-theme-switch .logo-dark {
   display: none;
 }
 
 [data-oui-theme="light"] .logo-theme-switch .logo-light {
   display: block;
+}
+
+@media (max-width: 1333px) {
+  .logo-theme-switch .logo-full {
+    display: none !important;
+  }
+
+  .logo-theme-switch .logo-compact {
+    display: block;
+  }
+}
+
+/* Hide scrollbar on top nav */
+.oui-overflow-x-auto {
+  scrollbar-width: none;
+}
+
+.oui-overflow-x-auto::-webkit-scrollbar {
+  display: none;
 }
 
 /* AI Sparkle button */
