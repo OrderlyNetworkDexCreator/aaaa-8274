@@ -314,7 +314,7 @@ export const useOrderlyConfig = () => {
           },
           {
             name: "X",
-            href: "https://google.com",
+            href: "https://x.com/Vanta_exchange",
             target: "_blank",
             icon: xIcon,
             activeIcon: xIcon,
