@@ -45,7 +45,7 @@ function limitPointsRankingTop100Plugin(): Plugin {
         )
         .replace(
           /total:\s*data\?\.meta\?\.total\s*\|\|\s*0/,
-          "Math.min(data?.meta?.total || 0, 100)"
+          "total: Math.min(data?.meta?.total || 0, 100)"
         );
     },
   };
