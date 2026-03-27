@@ -4,5 +4,8 @@
   "extend.affiliate.description": "Ganhe mais como afiliado da Orderly",
   "extend.staking": "Staking",
   "extend.staking.description": "Apostar ORDER/esORDER para adquirir VALOR",
-  "extend.swap": "Spot"
+  "extend.swap": "Spot",
+  "extend.nav.csTeam": "Equipe CS",
+  "extend.nav.userManual": "Manual do usuário",
+  "extend.nav.more": "Mais"
 }

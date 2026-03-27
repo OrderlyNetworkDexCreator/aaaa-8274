@@ -4,5 +4,8 @@
   "extend.affiliate.description": "Bir Orderly satış ortağı olarak daha fazla kazanın",
   "extend.staking": "Staking",
   "extend.staking.description": "VALOR kazanmak için ORDER/esORDER yatırın",
-  "extend.swap": "Spot"
+  "extend.swap": "Spot",
+  "extend.nav.csTeam": "CS Ekibi",
+  "extend.nav.userManual": "Kullanım kılavuzu",
+  "extend.nav.more": "Daha fazla"
 }

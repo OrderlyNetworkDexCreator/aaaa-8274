@@ -295,11 +295,11 @@ export const useOrderlyConfig = () => {
         href: "/portfolio",
       },
       {
-        name: "CS TEAM",
+        name: t("extend.nav.csTeam"),
         href: "/cs-team",
         children: [
           {
-            name: "User Manual",
+            name: t("extend.nav.userManual"),
             href: "https://google.com",
             target: "_blank",
             icon: bookIcon,
@@ -322,7 +322,7 @@ export const useOrderlyConfig = () => {
         ],
       },
       {
-        name: "More",
+        name: t("extend.nav.more"),
         href: "/more",
         children: [
           {
