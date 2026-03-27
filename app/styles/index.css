@@ -200,6 +200,11 @@
   color: rgba(0, 0, 0, 0.9);
 }
 
+/* topNavbar: replace opacity-based contrast-36 with a solid color in light mode */
+[data-oui-theme="light"] .oui-scaffold-topNavbar .oui-text-base-contrast-36 {
+  color: rgba(0, 0, 0, 0.8);
+}
+
 /* RTL support - flip flex-row layouts and text/margin alignment */
 [dir="rtl"] .oui-flex-row {
   flex-direction: row-reverse;
